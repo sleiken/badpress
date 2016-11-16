@@ -16,8 +16,9 @@ def index():
 
 @app.route('/analyze', methods=['POST'])
 def analyze():
-    print(request.form['term'])
-    return
+    term = request.form['term']
+    tweets = analyze_tweets(term)
+    return render_template('index.html', tweets = tweets)
 
 
 @app.route('/api', methods=['POST'])

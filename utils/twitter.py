@@ -11,12 +11,12 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
-def analyze_tweets(search_term):
-    public_tweets = api.search('microsoft')
-    pos_tweets = []
+def analyze_tweets(term):
+    public_tweets = api.search(term)
+    polarity = []
+    subjectivity = []
     for tweet in public_tweets:
         analysis = TextBlob(tweet.text)
-        print(analysis.polarity)
-        if analysis.polarity > 0:
-            pos_tweets.append({tweet: analysis})
-    return pos_tweets
+        polarity.append(analysis.polarity)
+        subjectivity.append(analysis.subjectivity)
+    return [sum(polarity) / len(polarity), sum(subjectivity) / len(subjectivity)]

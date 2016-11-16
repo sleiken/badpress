@@ -4,6 +4,11 @@
 </form>
 <div>
   {% if tweets %}
-  <p>{{ tweets }}</p>
+  <table>
+    <tr>
+      <td>Polarity: {{ tweets[0] }}</td>
+      <td>Subjectivity {{ tweets[1] }}</td>
+    </tr>
+  </table>
   {% endif %}
 </div>
