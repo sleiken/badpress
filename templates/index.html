@@ -4,11 +4,7 @@
 </form>
 <div>
   {% if tweets %}
-  <table>
-    <tr>
-      <td>Polarity: {{ tweets[0] }}</td>
-      <td>Subjectivity {{ tweets[1] }}</td>
-    </tr>
-  </table>
+    <p>Average Positivity: {{ '%.2f' % tweets[0] }}</p>
+    <p>Average Subjectivity: {{ '%.2f' % tweets[1] }}</p>
   {% endif %}
 </div>
