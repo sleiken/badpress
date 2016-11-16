@@ -1,0 +1,9 @@
+<form action="/analyze" method="POST">
+  <input type="text" name="term" placeholder="Enter term..."/>
+  <input type="submit" value="Analyze">
+</form>
+<div>
+  {% if tweets %}
+  <p>{{ tweets }}</p>
+  {% endif %}
+</div>

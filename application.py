@@ -4,13 +4,20 @@ from flask import request, session
 from flask import render_template
 from flask import g as Globals
 
+from utils.twitter import analyze_tweets
+
 
 app = Flask(__name__, static_url_path='')
 app.model = 0
 
 @app.route('/')
 def index():
-    return render_template('index.html', name="Sam")
+    return render_template('index.html', tweets = None)
+
+@app.route('/analyze', methods=['POST'])
+def analyze():
+    print(request.form['term'])
+    return
 
 
 @app.route('/api', methods=['POST'])
@@ -21,7 +28,6 @@ def api():
     return jsonify({
         'model': app.model
     })
-
 
 app.secret_key = ''
 
