@@ -4,7 +4,7 @@
 </form>
 <div>
   {% if tweets %}
-    <p>Average Positivity: {{ '%.2f' % tweets[0] }}</p>
-    <p>Average Subjectivity: {{ '%.2f' % tweets[1] }}</p>
+    <p>Average Positivity: {{ tweets[0] }}</p>
+    <p>Average Subjectivity: {{ tweets[1] }}</p>
   {% endif %}
 </div>

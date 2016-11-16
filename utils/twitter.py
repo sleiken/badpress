@@ -19,4 +19,5 @@ def analyze_tweets(term):
         analysis = TextBlob(tweet.text)
         polarity.append(analysis.polarity)
         subjectivity.append(analysis.subjectivity)
-    return [sum(polarity) / len(polarity), sum(subjectivity) / len(subjectivity)]
+    scores = [sum(polarity) / len(polarity), sum(subjectivity) / len(subjectivity)]
+    return ['%.2f' % x for x in scores]
