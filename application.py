@@ -8,7 +8,6 @@ from utils.twitter import analyze_tweets
 
 
 app = Flask(__name__, static_url_path='')
-app.model = 0
 
 @app.route('/')
 def index():
@@ -19,6 +18,14 @@ def analyze():
     term = request.form['term']
     tweets = analyze_tweets(term)
     return render_template('index.html', tweets = tweets)
+
+@app.route('/api', methods=['POST'])
+def api():
+    blob = request.get_json()
+
+    return jsonify({
+        'model': 0
+    })
 
 # app.secret_key = ''
 
