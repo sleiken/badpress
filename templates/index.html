@@ -11,10 +11,10 @@
       var node = document.getElementById('main');
       var app = Elm.Main.embed(node);
     </script>
-    <form action="/analyze" method="POST">
+    <!-- <form action="/analyze" method="POST">
       <input type="text" name="term" placeholder="Enter term..."/>
       <input type="submit" value="Analyze">
-    </form>
+    </form> -->
     <div>
       {% if tweets %}
         <p>Average Positivity: {{ tweets[0] }}</p>

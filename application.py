@@ -19,12 +19,12 @@ def analyze():
     tweets = analyze_tweets(term)
     return render_template('index.html', tweets = tweets)
 
-@app.route('/api', methods=['POST'])
+@app.route('/api', methods=['GET', 'POST'])
 def api():
-    blob = request.get_json()
+    # blob = request.get_json()
 
     return jsonify({
-        'model': 0
+        'name': '0'
     })
 
 # app.secret_key = ''

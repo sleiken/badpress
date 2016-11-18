@@ -1,6 +1,7 @@
 module Main exposing (..)
 
-import Html exposing (Html, div, button, text)
+import Html exposing (..)
+import Html.Attributes exposing (id, type', for, value, class)
 import Html.Events exposing (onClick)
 import Html.App
 import Http
@@ -36,8 +37,9 @@ type Msg
 view : Model -> Html Msg
 view model =
     div []
-        [ button [ onClick Fetch ] [ text "Fetch" ]
-        , text model
+        [ form []
+          [ input [ id "test", type' "text", value model ] [] ]
+        , button [ onClick Fetch ] [ text "Fetch" ]  
         ]
 
 
@@ -48,7 +50,7 @@ decode =
 
 url : String
 url =
-    "http://swapi.co/api/planets/1/?format=json"
+    "/api"
 
 
 fetchTask : Task Http.Error String
