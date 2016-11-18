@@ -6,3 +6,28 @@ body {
 .hidden {
   display: none;
 }
+.block {
+  display: block;
+}
+.h-align-center {
+  display: flex;
+  justify-content: center;
+  height: 400px;
+  width: 100%;
+}
+.v-align-center {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+#search {
+  width: 600px;
+  height: 100px;
+  font-size: 80px;
+  border: none;
+  border-bottom: 1px solid grey;
+  background: transparent;
+  outline: none;
+  padding-top: 280px;
+}

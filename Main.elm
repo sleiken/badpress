@@ -39,14 +39,19 @@ type Msg
 
 view : Model -> Html Msg
 view model =
-    div [] [ div [ class "search-bar" ]
-               [ form [ Html.Events.onSubmit Fetch ] [ input [ id "test", type' "text", Html.Events.onInput Query ] [] ]
-               ]
-           , div [ class ("results " ++ model.class) ]
-               [ div [class "positivity"] [ text ("Positivity: " ++ model.result.p)]
-               , div [class "subjectivity"] [ text ("Subjectivity: " ++ model.result.s) ]
-               ]
-           ]
+    div [ class "h-align-center"]
+      [ div [ class "block" ]
+        [ div [ class "v-align-center search-bar" ]
+          [ form [ Html.Events.onSubmit Fetch ]
+            [ input [ id "search", type' "text", Html.Events.onInput Query ] []
+            ]
+          ]
+        , div [ class ("results " ++ model.class) ]
+          [ div [class "positivity"] [ text ("Positivity: " ++ model.result.p)]
+          , div [class "subjectivity"] [ text ("Subjectivity: " ++ model.result.s) ]
+          ]
+        ]
+      ]
 
 type alias ResultRecord =
   { p : String
