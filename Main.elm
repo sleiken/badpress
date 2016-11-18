@@ -16,11 +16,12 @@ import Keyboard
 type alias Model =
     { query: String
     , result: ResultRecord
+    , class: String
     }
 
 init : ( Model, Cmd Msg )
 init =
-    ( { query = "", result = {p = "", s = ""} }, Cmd.none )
+    ( { query = "", result = {p = "", s = ""}, class = "hidden" }, Cmd.none )
 
 
 -- MESSAGES
@@ -41,7 +42,7 @@ view model =
     div [] [ div [ class "search-bar" ]
                [ form [ Html.Events.onSubmit Fetch ] [ input [ id "test", type' "text", Html.Events.onInput Query ] [] ]
                ]
-           , div [ class "results" ]
+           , div [ class ("results " ++ model.class) ]
                [ div [class "positivity"] [ text ("Positivity: " ++ model.result.p)]
                , div [class "subjectivity"] [ text ("Subjectivity: " ++ model.result.s) ]
                ]
@@ -83,7 +84,7 @@ update msg model =
             ( model, fetchCmd model )
 
         FetchSuccess result ->
-            ( { model | result = { p = result.p, s = result.s } }, Cmd.none )
+            ( { model | result = { p = result.p, s = result.s }, class = "" }, Cmd.none )
 
         FetchError error ->
             ( model, Cmd.none )
