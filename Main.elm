@@ -42,7 +42,7 @@ view model =
     div [ class "h-align-center"]
       [ div [ class "block" ]
         [ div [ class "v-align-center search-bar" ]
-          [ form [ Html.Events.onSubmit Fetch, autocomplete "off" ]
+          [ form [ Html.Events.onSubmit Fetch, autocomplete False ]
             [ input [ id "search", type' "text", Html.Events.onInput Query ] []
             ]
           ]
