@@ -9130,15 +9130,7 @@ var _user$project$Main$update = F2(
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			default:
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							query: _elm_lang$core$Basics$toString(_p0._0)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 		}
 	});
 var _user$project$Main$Fetch = {ctor: 'Fetch'};
@@ -9150,26 +9142,64 @@ var _user$project$Main$view = function (model) {
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
-				_elm_lang$html$Html$form,
+				_elm_lang$html$Html$div,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html_Events$onSubmit(_user$project$Main$Fetch)
+						_elm_lang$html$Html_Attributes$class('search-bar')
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
 						A2(
-						_elm_lang$html$Html$input,
+						_elm_lang$html$Html$form,
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html_Attributes$id('test'),
-								_elm_lang$html$Html_Attributes$type$('text'),
-								_elm_lang$html$Html_Events$onInput(_user$project$Main$Query)
+								_elm_lang$html$Html_Events$onSubmit(_user$project$Main$Fetch)
 							]),
 						_elm_lang$core$Native_List.fromArray(
-							[]))
+							[
+								A2(
+								_elm_lang$html$Html$input,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$id('test'),
+										_elm_lang$html$Html_Attributes$type$('text'),
+										_elm_lang$html$Html_Events$onInput(_user$project$Main$Query)
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[]))
+							]))
 					])),
-				_elm_lang$html$Html$text(model.result.p),
-				_elm_lang$html$Html$text(model.result.s)
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('results')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('positivity')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text(
+								A2(_elm_lang$core$Basics_ops['++'], 'Positivity: ', model.result.p))
+							])),
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('subjectivity')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text(
+								A2(_elm_lang$core$Basics_ops['++'], 'Subjectivity: ', model.result.s))
+							]))
+					]))
 			]));
 };
 var _user$project$Main$main = {
