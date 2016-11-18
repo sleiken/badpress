@@ -37,8 +37,7 @@ type Msg
 view : Model -> Html Msg
 view model =
     div []
-        [ form []
-          [ input [ id "test", type' "text", value model ] [] ]
+        [ form [] [ input [ id "test", type' "text", value model ] [] ]
         , button [ onClick Fetch ] [ text "Fetch" ]
         ]
 
@@ -48,14 +47,12 @@ decode =
     Decode.at [ "name" ] Decode.string
 
 
-url : String
-url =
-    "/api"
-
-
 fetchTask : Task Http.Error String
 fetchTask =
-    Http.get decode url
+    Http.post
+      decode
+      "/api"
+      (Http.string "test_term")
 
 
 fetchCmd : Cmd Msg

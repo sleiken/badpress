@@ -8704,13 +8704,16 @@ var _evancz$elm_http$Http$post = F3(
 			A2(_evancz$elm_http$Http$send, _evancz$elm_http$Http$defaultSettings, request));
 	});
 
-var _user$project$Main$url = '/api';
 var _user$project$Main$decode = A2(
 	_elm_lang$core$Json_Decode$at,
 	_elm_lang$core$Native_List.fromArray(
 		['name']),
 	_elm_lang$core$Json_Decode$string);
-var _user$project$Main$fetchTask = A2(_evancz$elm_http$Http$get, _user$project$Main$decode, _user$project$Main$url);
+var _user$project$Main$fetchTask = A3(
+	_evancz$elm_http$Http$post,
+	_user$project$Main$decode,
+	'/api',
+	_evancz$elm_http$Http$string('test_term'));
 var _user$project$Main$init = {ctor: '_Tuple2', _0: '', _1: _elm_lang$core$Platform_Cmd$none};
 var _user$project$Main$FetchError = function (a) {
 	return {ctor: 'FetchError', _0: a};
