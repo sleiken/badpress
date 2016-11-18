@@ -1,7 +1,7 @@
 module Main exposing (..)
 
 import Html exposing (..)
-import Html.Attributes exposing (id, type', value, class, autocomplete)
+import Html.Attributes exposing (id, type', value, class, autocomplete, placeholder)
 import Html.Events exposing (onClick)
 import Html.App
 import Http
@@ -43,7 +43,7 @@ view model =
       [ div [ class "block" ]
         [ div [ class "v-align-center search-bar" ]
           [ form [ Html.Events.onSubmit Fetch, autocomplete False ]
-            [ input [ id "search", type' "text", Html.Events.onInput Query ] []
+            [ input [ id "search", type' "text", Html.Events.onInput Query, placeholder "Enter a word or phrase to analyze" ] []
             ]
           ]
         , div [ class ("results " ++ model.class) ]
