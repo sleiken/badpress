@@ -1,7 +1,7 @@
 module Main exposing (..)
 
 import Html exposing (..)
-import Html.Attributes exposing (id, type', for, value, class)
+import Html.Attributes exposing (id, type', value, class)
 import Html.Events exposing (onClick)
 import Html.App
 import Http
@@ -39,7 +39,7 @@ view model =
     div []
         [ form []
           [ input [ id "test", type' "text", value model ] [] ]
-        , button [ onClick Fetch ] [ text "Fetch" ]  
+        , button [ onClick Fetch ] [ text "Fetch" ]
         ]
 
 
