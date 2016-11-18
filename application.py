@@ -21,9 +21,8 @@ def analyze():
 
 @app.route('/api', methods=['POST'])
 def api():
-    blob = request.get_json()
+    blob = request.data
     print(blob)
-    print(request.data)
 
     return jsonify({
         'name': "Sam"

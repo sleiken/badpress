@@ -7,17 +7,20 @@ import Html.App
 import Http
 import Task exposing (Task)
 import Json.Decode as Decode
+import Keyboard
 
 -- MODEL
 
 
 type alias Model =
-    String
+    { query: String
+    , result: String
+    }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( "", Cmd.none )
+    ( Model "" "", Cmd.none )
 
 
 
@@ -28,6 +31,8 @@ type Msg
     = Fetch
     | FetchSuccess String
     | FetchError Http.Error
+    -- | KeyMsg Keyboard.KeyCode
+    | Query String
 
 
 
@@ -37,8 +42,8 @@ type Msg
 view : Model -> Html Msg
 view model =
     div []
-        [ form [] [ input [ id "test", type' "text", value model ] [] ]
-        , button [ onClick Fetch ] [ text "Fetch" ]
+        [ form [ Html.Events.onSubmit Fetch ] [ input [ id "test", type' "text", Html.Events.onInput Query ] [] ]
+        , text model.query
         ]
 
 
@@ -46,13 +51,16 @@ decode : Decode.Decoder String
 decode =
     Decode.at [ "name" ] Decode.string
 
+test : String
+test =
+    "TESTTTTT"
 
 fetchTask : Task Http.Error String
 fetchTask =
     Http.post
       decode
       "/api"
-      (Http.string "test_term")
+      (Http.string test)
 
 
 fetchCmd : Cmd Msg
@@ -67,15 +75,28 @@ fetchCmd =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        -- KeyMsg key ->
+        --     ( { model | result = (toString key) }, Cmd.none )
+
+        Query query ->
+            ( { model | query = query }, Cmd.none )
+
         Fetch ->
             ( model, fetchCmd )
 
         FetchSuccess name ->
-            ( name, Cmd.none )
+            ( { model | result = name }, Cmd.none )
 
         FetchError error ->
-            ( toString error, Cmd.none )
+            ( { model | result =toString error }, Cmd.none )
 
+
+-- SUBSCRIPTIONS
+
+
+-- subscriptions : Model -> Sub Msg
+-- subscriptions model =
+--     Keyboard.downs KeyMsg
 
 
 -- MAIN
