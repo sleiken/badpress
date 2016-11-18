@@ -6,8 +6,10 @@ import Html.Events exposing (onClick)
 import Html.App
 import Http
 import Task exposing (Task)
-import Json.Decode exposing ((:=), Decoder, string, object3)
-import Keyboard
+import Json.Decode exposing ((:=), Decoder, string, object4)
+import Keyboard exposing (..)
+import Char exposing (..)
+import Dom
 
 
 -- MODEL
@@ -21,7 +23,7 @@ type alias Model =
 
 init : ( Model, Cmd Msg )
 init =
-    ( { query = "", result = {p = "", n = "", s = ""}, class = "hidden" }, Cmd.none )
+    ( { query = "", result = {p = "", n = "", s = "", t = ""}, class = "hidden" }, Cmd.none )
 
 
 -- MESSAGES
@@ -46,6 +48,7 @@ view model =
             [ input [ id "search", type' "text", Html.Events.onInput Query, placeholder "Enter a word or phrase to analyze", value model.query ] []
             ]
           ]
+        , div [ class ("term " ++ model.class) ] [ text  model.result.t ]
         , div [ class ("results " ++ model.class) ]
           [ div [class "positivity"] [ text ("Positive Tweets: " ++ model.result.p ++ "%") ]
           , div [class "negativity"] [ text ("Negative Tweets: " ++ model.result.n ++ "%") ]
@@ -58,14 +61,16 @@ type alias ResultRecord =
   { p : String
   , n : String
   , s : String
+  , t : String
   }
 
 decode : Decoder ResultRecord
 decode =
-  object3 ResultRecord
+  object4 ResultRecord
     ("pos" := string)
     ("neg" := string)
     ("subjectivity" := string)
+    ("term" := string)
 
 fetchTask : Model -> Task Http.Error ResultRecord
 fetchTask model =
@@ -92,7 +97,7 @@ update msg model =
             ( { model | query = "" }, fetchCmd model )
 
         FetchSuccess result ->
-            ( { model | result = { p = result.p, n = result.n, s = result.s }, class = "" }, Cmd.none )
+            ( { model | result = { p = result.p, n = result.n, s = result.s, t = result.t }, class = "" }, Cmd.none )
 
         FetchError error ->
             ( model, Cmd.none )

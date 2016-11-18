@@ -17,6 +17,9 @@ body {
 .hidden {
   display: none;
 }
+.term {
+  text-align: center;
+}
 .h-align-center {
   display: flex;
   justify-content: center;
@@ -34,7 +37,6 @@ body {
   height: 60px;
   font-size: 40px;
   border: none;
-  /*border-bottom: 1px solid grey;*/
   background: transparent;
   outline: none;
   padding-top: 140px;

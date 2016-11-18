@@ -23,11 +23,13 @@ def analyze():
 def api():
     blob = request.data
     analysis = analyze_tweets(blob)
+    analysis.append((bytes.decode(blob)).capitalize())
 
     return jsonify({
         'pos': analysis[0],
         'neg': analysis[1],
-        'subjectivity': analysis[2]
+        'subjectivity': analysis[2],
+        'term': analysis[3]
     })
 
 
