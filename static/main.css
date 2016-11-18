@@ -1,5 +1,5 @@
 body {
-  background-color: lightblue;
+  background-image: url("paper.jpg");
   color: black;
 }
 
@@ -12,7 +12,7 @@ body {
 .h-align-center {
   display: flex;
   justify-content: center;
-  height: 400px;
+  height: 270px;
   width: 100%;
 }
 .v-align-center {
@@ -29,5 +29,5 @@ body {
   border-bottom: 1px solid grey;
   background: transparent;
   outline: none;
-  padding-top: 280px;
+  padding-top: 140px;
 }
