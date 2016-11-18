@@ -1,7 +1,7 @@
 module Main exposing (..)
 
 import Html exposing (..)
-import Html.Attributes exposing (id, type', value, class)
+import Html.Attributes exposing (id, type', value, class, autocomplete, placeholder)
 import Html.Events exposing (onClick)
 import Html.App
 import Http
@@ -16,11 +16,12 @@ import Keyboard
 type alias Model =
     { query: String
     , result: ResultRecord
+    , class: String
     }
 
 init : ( Model, Cmd Msg )
 init =
-    ( { query = "", result = {p = "", s = ""} }, Cmd.none )
+    ( { query = "", result = {p = "", s = ""}, class = "hidden" }, Cmd.none )
 
 
 -- MESSAGES
@@ -38,14 +39,19 @@ type Msg
 
 view : Model -> Html Msg
 view model =
-    div [] [ div [ class "search-bar" ]
-               [ form [ Html.Events.onSubmit Fetch ] [ input [ id "test", type' "text", Html.Events.onInput Query ] [] ]
-               ]
-           , div [ class "results" ]
-               [ div [class "positivity"] [ text ("Positivity: " ++ model.result.p)]
-               , div [class "subjectivity"] [ text ("Subjectivity: " ++ model.result.s) ]
-               ]
-           ]
+    div [ class "h-align-center"]
+      [ div [ class "block" ]
+        [ div [ class "v-align-center search-bar" ]
+          [ form [ Html.Events.onSubmit Fetch, autocomplete False ]
+            [ input [ id "search", type' "text", Html.Events.onInput Query, placeholder "Enter a word or phrase to analyze" ] []
+            ]
+          ]
+        , div [ class ("results " ++ model.class) ]
+          [ div [class "positivity"] [ text ("Positivity: " ++ model.result.p)]
+          , div [class "subjectivity"] [ text ("Subjectivity: " ++ model.result.s) ]
+          ]
+        ]
+      ]
 
 type alias ResultRecord =
   { p : String
@@ -83,7 +89,7 @@ update msg model =
             ( model, fetchCmd model )
 
         FetchSuccess result ->
-            ( { model | result = { p = result.p, s = result.s } }, Cmd.none )
+            ( { model | result = { p = result.p, s = result.s }, class = "" }, Cmd.none )
 
         FetchError error ->
             ( model, Cmd.none )

@@ -7,7 +7,7 @@ from flask import g as Globals
 from utils.twitter import analyze_tweets
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path=None)
 
 @app.route('/')
 def index():
