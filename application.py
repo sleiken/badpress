@@ -7,7 +7,7 @@ from flask import g as Globals
 from utils.twitter import analyze_tweets
 
 
-app = Flask(__name__, static_url_path='')
+app = Flask(__name__)
 
 @app.route('/')
 def index():
@@ -19,12 +19,14 @@ def analyze():
     tweets = analyze_tweets(term)
     return render_template('index.html', tweets = tweets)
 
-@app.route('/api', methods=['GET', 'POST'])
+@app.route('/api', methods=['POST'])
 def api():
-    # blob = request.get_json()
+    blob = request.data
+    analysis = analyze_tweets(blob)
 
     return jsonify({
-        'name': 'chris'
+        'positivity': analysis[0],
+        'subjectivity': analysis[1]
     })
 
 # app.secret_key = ''

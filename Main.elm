@@ -1,24 +1,26 @@
 module Main exposing (..)
 
 import Html exposing (..)
-import Html.Attributes exposing (id, type', for, value, class)
+import Html.Attributes exposing (id, type', value, class)
 import Html.Events exposing (onClick)
 import Html.App
 import Http
 import Task exposing (Task)
-import Json.Decode as Decode
+import Json.Decode exposing ((:=), Decoder, string, object2)
+import Keyboard
+
 
 -- MODEL
 
 
 type alias Model =
-    String
-
+    { query: String
+    , result: ResultRecord
+    }
 
 init : ( Model, Cmd Msg )
 init =
-    ( "", Cmd.none )
-
+    ( { query = "", result = {p = "", s = ""} }, Cmd.none )
 
 
 -- MESSAGES
@@ -26,9 +28,9 @@ init =
 
 type Msg
     = Fetch
-    | FetchSuccess String
+    | FetchSuccess ResultRecord
     | FetchError Http.Error
-
+    | Query String
 
 
 -- VIEW
@@ -36,32 +38,36 @@ type Msg
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ form []
-          [ input [ id "test", type' "text", value model ] [] ]
-        , button [ onClick Fetch ] [ text "Fetch" ]  
-        ]
+    div [] [ div [ class "search-bar" ]
+               [ form [ Html.Events.onSubmit Fetch ] [ input [ id "test", type' "text", Html.Events.onInput Query ] [] ]
+               ]
+           , div [ class "results" ]
+               [ div [class "positivity"] [ text ("Positivity: " ++ model.result.p)]
+               , div [class "subjectivity"] [ text ("Subjectivity: " ++ model.result.s) ]
+               ]
+           ]
 
+type alias ResultRecord =
+  { p : String
+  , s : String
+  }
 
-decode : Decode.Decoder String
+decode : Decoder ResultRecord
 decode =
-    Decode.at [ "name" ] Decode.string
+  object2 ResultRecord
+    ("positivity" := string)
+    ("subjectivity" := string)
 
+fetchTask : Model -> Task Http.Error ResultRecord
+fetchTask model =
+    Http.post
+      decode
+      "/api"
+      (Http.string model.query)
 
-url : String
-url =
-    "/api"
-
-
-fetchTask : Task Http.Error String
-fetchTask =
-    Http.get decode url
-
-
-fetchCmd : Cmd Msg
-fetchCmd =
-    Task.perform FetchError FetchSuccess fetchTask
-
+fetchCmd : Model -> Cmd Msg
+fetchCmd model =
+    Task.perform FetchError FetchSuccess (fetchTask model)
 
 
 -- UPDATE
@@ -70,15 +76,17 @@ fetchCmd =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Fetch ->
-            ( model, fetchCmd )
+        Query query ->
+            ( { model | query = query }, Cmd.none )
 
-        FetchSuccess name ->
-            ( name, Cmd.none )
+        Fetch ->
+            ( model, fetchCmd model )
+
+        FetchSuccess result ->
+            ( { model | result = { p = result.p, s = result.s } }, Cmd.none )
 
         FetchError error ->
-            ( toString error, Cmd.none )
-
+            ( model, Cmd.none )
 
 
 -- MAIN
