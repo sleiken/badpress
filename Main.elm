@@ -47,7 +47,7 @@ view model =
 
 decode : Decode.Decoder String
 decode =
-    Decode.at [ "name" ] Decode.string
+    Decode.at [ "positivity", "subjectivity" ] Decode.string
 
 
 fetchTask : Model -> Task Http.Error String

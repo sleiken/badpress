@@ -22,10 +22,11 @@ def analyze():
 @app.route('/api', methods=['POST'])
 def api():
     blob = request.data
-    print(blob)
+    analysis = analyze_tweets(blob)
 
     return jsonify({
-        'name': "Sam"
+        'positivity': analysis[0],
+        'subjectivity': analysis[1]
     })
 
 # app.secret_key = ''
