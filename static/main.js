@@ -9056,17 +9056,18 @@ var _evancz$elm_http$Http$post = F3(
 			A2(_evancz$elm_http$Http$send, _evancz$elm_http$Http$defaultSettings, request));
 	});
 
-var _user$project$Main$test = 'TESTTTTT';
 var _user$project$Main$decode = A2(
 	_elm_lang$core$Json_Decode$at,
 	_elm_lang$core$Native_List.fromArray(
 		['name']),
 	_elm_lang$core$Json_Decode$string);
-var _user$project$Main$fetchTask = A3(
-	_evancz$elm_http$Http$post,
-	_user$project$Main$decode,
-	'/api',
-	_evancz$elm_http$Http$string(_user$project$Main$test));
+var _user$project$Main$fetchTask = function (model) {
+	return A3(
+		_evancz$elm_http$Http$post,
+		_user$project$Main$decode,
+		'/api',
+		_evancz$elm_http$Http$string(model.query));
+};
 var _user$project$Main$Model = F2(
 	function (a, b) {
 		return {query: a, result: b};
@@ -9085,7 +9086,13 @@ var _user$project$Main$FetchError = function (a) {
 var _user$project$Main$FetchSuccess = function (a) {
 	return {ctor: 'FetchSuccess', _0: a};
 };
-var _user$project$Main$fetchCmd = A3(_elm_lang$core$Task$perform, _user$project$Main$FetchError, _user$project$Main$FetchSuccess, _user$project$Main$fetchTask);
+var _user$project$Main$fetchCmd = function (model) {
+	return A3(
+		_elm_lang$core$Task$perform,
+		_user$project$Main$FetchError,
+		_user$project$Main$FetchSuccess,
+		_user$project$Main$fetchTask(model));
+};
 var _user$project$Main$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
@@ -9099,7 +9106,11 @@ var _user$project$Main$update = F2(
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'Fetch':
-				return {ctor: '_Tuple2', _0: model, _1: _user$project$Main$fetchCmd};
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: _user$project$Main$fetchCmd(model)
+				};
 			case 'FetchSuccess':
 				return {
 					ctor: '_Tuple2',
@@ -9147,7 +9158,7 @@ var _user$project$Main$view = function (model) {
 						_elm_lang$core$Native_List.fromArray(
 							[]))
 					])),
-				_elm_lang$html$Html$text(model.query)
+				_elm_lang$html$Html$text(model.result)
 			]));
 };
 var _user$project$Main$main = {

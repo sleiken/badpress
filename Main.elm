@@ -23,7 +23,6 @@ init =
     ( Model "" "", Cmd.none )
 
 
-
 -- MESSAGES
 
 
@@ -31,7 +30,6 @@ type Msg
     = Fetch
     | FetchSuccess String
     | FetchError Http.Error
-    -- | KeyMsg Keyboard.KeyCode
     | Query String
 
 
@@ -43,7 +41,7 @@ view : Model -> Html Msg
 view model =
     div []
         [ form [ Html.Events.onSubmit Fetch ] [ input [ id "test", type' "text", Html.Events.onInput Query ] [] ]
-        , text model.query
+        , text model.result
         ]
 
 
@@ -51,22 +49,18 @@ decode : Decode.Decoder String
 decode =
     Decode.at [ "name" ] Decode.string
 
-test : String
-test =
-    "TESTTTTT"
 
-fetchTask : Task Http.Error String
-fetchTask =
+fetchTask : Model -> Task Http.Error String
+fetchTask model =
     Http.post
       decode
       "/api"
-      (Http.string test)
+      (Http.string model.query)
 
 
-fetchCmd : Cmd Msg
-fetchCmd =
-    Task.perform FetchError FetchSuccess fetchTask
-
+fetchCmd : Model -> Cmd Msg
+fetchCmd model =
+    Task.perform FetchError FetchSuccess (fetchTask model)
 
 
 -- UPDATE
@@ -75,28 +69,17 @@ fetchCmd =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        -- KeyMsg key ->
-        --     ( { model | result = (toString key) }, Cmd.none )
-
         Query query ->
             ( { model | query = query }, Cmd.none )
 
         Fetch ->
-            ( model, fetchCmd )
+            ( model, fetchCmd model )
 
-        FetchSuccess name ->
-            ( { model | result = name }, Cmd.none )
+        FetchSuccess result ->
+            ( { model | result = result }, Cmd.none )
 
         FetchError error ->
             ( { model | result =toString error }, Cmd.none )
-
-
--- SUBSCRIPTIONS
-
-
--- subscriptions : Model -> Sub Msg
--- subscriptions model =
---     Keyboard.downs KeyMsg
 
 
 -- MAIN
