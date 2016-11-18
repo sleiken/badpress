@@ -9,6 +9,7 @@ import Task exposing (Task)
 import Json.Decode exposing ((:=), Decoder, string, object2)
 import Keyboard
 
+
 -- MODEL
 
 
@@ -16,7 +17,6 @@ type alias Model =
     { query: String
     , result: ResultRecord
     }
-
 
 init : ( Model, Cmd Msg )
 init =
@@ -33,7 +33,6 @@ type Msg
     | Query String
 
 
-
 -- VIEW
 
 
@@ -45,12 +44,10 @@ view model =
         , text model.result.s
         ]
 
-
 type alias ResultRecord =
   { p : String
   , s : String
   }
-
 
 decode : Decoder ResultRecord
 decode =
@@ -58,14 +55,12 @@ decode =
     ("positivity" := string)
     ("subjectivity" := string)
 
-
 fetchTask : Model -> Task Http.Error ResultRecord
 fetchTask model =
     Http.post
       decode
       "/api"
       (Http.string model.query)
-
 
 fetchCmd : Model -> Cmd Msg
 fetchCmd model =
@@ -88,7 +83,7 @@ update msg model =
             ( { model | result = { p = result.p, s = result.s } }, Cmd.none )
 
         FetchError error ->
-            ( { model | query = toString error }, Cmd.none )
+            ( model, Cmd.none )
 
 
 -- MAIN
