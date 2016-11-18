@@ -1,6 +1,11 @@
+/*font-family: 'Slabo 27px', serif;
+font-family: 'Playfair Display', serif;
+font-family: 'Josefin Slab', serif;*/
 body {
   background-image: url("paper.jpg");
   color: black;
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
 }
 .block {
   display: block;
@@ -25,13 +30,14 @@ body {
   width: 100%;
 }
 #search {
-  width: 600px;
+  width: 700px;
   height: 60px;
   font-size: 40px;
   border: none;
-  border-bottom: 1px solid grey;
+  /*border-bottom: 1px solid grey;*/
   background: transparent;
   outline: none;
   padding-top: 140px;
   text-align: center;
+  font-family: 'Playfair Display', serif;
 }
