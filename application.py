@@ -25,11 +25,10 @@ def api():
     analysis = analyze_tweets(blob)
 
     return jsonify({
-        'positivity': analysis[0],
-        'subjectivity': analysis[1]
+        'pos': analysis[0],
+        'neg': analysis[1],
+        'subjectivity': analysis[2]
     })
-
-# app.secret_key = ''
 
 
 if __name__ == "__main__":

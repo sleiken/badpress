@@ -2,12 +2,15 @@ body {
   background-image: url("paper.jpg");
   color: black;
 }
-
-.hidden {
-  display: none;
-}
 .block {
   display: block;
+}
+.results {
+  display: flex;
+  justify-content: space-around;
+}
+.hidden {
+  display: none;
 }
 .h-align-center {
   display: flex;

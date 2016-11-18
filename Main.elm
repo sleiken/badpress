@@ -6,7 +6,7 @@ import Html.Events exposing (onClick)
 import Html.App
 import Http
 import Task exposing (Task)
-import Json.Decode exposing ((:=), Decoder, string, object2)
+import Json.Decode exposing ((:=), Decoder, string, object3)
 import Keyboard
 
 
@@ -21,7 +21,7 @@ type alias Model =
 
 init : ( Model, Cmd Msg )
 init =
-    ( { query = "", result = {p = "", s = ""}, class = "hidden" }, Cmd.none )
+    ( { query = "", result = {p = "", n = "", s = ""}, class = "hidden" }, Cmd.none )
 
 
 -- MESSAGES
@@ -43,11 +43,12 @@ view model =
       [ div [ class "block" ]
         [ div [ class "v-align-center search-bar" ]
           [ form [ Html.Events.onSubmit Fetch, autocomplete False ]
-            [ input [ id "search", type' "text", Html.Events.onInput Query, placeholder "Enter a word or phrase to analyze" ] []
+            [ input [ id "search", type' "text", Html.Events.onInput Query, placeholder "Enter a word or phrase to analyze", value model.query ] []
             ]
           ]
         , div [ class ("results " ++ model.class) ]
-          [ div [class "positivity"] [ text ("Positivity: " ++ model.result.p)]
+          [ div [class "positivity"] [ text ("Positivity: " ++ model.result.p) ]
+          , div [class "negativity"] [ text ("Negativity: " ++ model.result.n) ]
           , div [class "subjectivity"] [ text ("Subjectivity: " ++ model.result.s) ]
           ]
         ]
@@ -55,13 +56,15 @@ view model =
 
 type alias ResultRecord =
   { p : String
+  , n : String
   , s : String
   }
 
 decode : Decoder ResultRecord
 decode =
-  object2 ResultRecord
-    ("positivity" := string)
+  object3 ResultRecord
+    ("pos" := string)
+    ("neg" := string)
     ("subjectivity" := string)
 
 fetchTask : Model -> Task Http.Error ResultRecord
@@ -86,10 +89,10 @@ update msg model =
             ( { model | query = query }, Cmd.none )
 
         Fetch ->
-            ( model, fetchCmd model )
+            ( { model | query = "" }, fetchCmd model )
 
         FetchSuccess result ->
-            ( { model | result = { p = result.p, s = result.s }, class = "" }, Cmd.none )
+            ( { model | result = { p = result.p, n = result.n, s = result.s }, class = "" }, Cmd.none )
 
         FetchError error ->
             ( model, Cmd.none )
