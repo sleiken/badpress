@@ -9056,26 +9056,33 @@ var _evancz$elm_http$Http$post = F3(
 			A2(_evancz$elm_http$Http$send, _evancz$elm_http$Http$defaultSettings, request));
 	});
 
-var _user$project$Main$decode = A2(
-	_elm_lang$core$Json_Decode$at,
-	_elm_lang$core$Native_List.fromArray(
-		['name']),
-	_elm_lang$core$Json_Decode$string);
+var _user$project$Main$init = {
+	ctor: '_Tuple2',
+	_0: {
+		query: '',
+		result: {p: '', s: ''}
+	},
+	_1: _elm_lang$core$Platform_Cmd$none
+};
+var _user$project$Main$Model = F2(
+	function (a, b) {
+		return {query: a, result: b};
+	});
+var _user$project$Main$ResultRecord = F2(
+	function (a, b) {
+		return {p: a, s: b};
+	});
+var _user$project$Main$decode = A3(
+	_elm_lang$core$Json_Decode$object2,
+	_user$project$Main$ResultRecord,
+	A2(_elm_lang$core$Json_Decode_ops[':='], 'positivity', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode_ops[':='], 'subjectivity', _elm_lang$core$Json_Decode$string));
 var _user$project$Main$fetchTask = function (model) {
 	return A3(
 		_evancz$elm_http$Http$post,
 		_user$project$Main$decode,
 		'/api',
 		_evancz$elm_http$Http$string(model.query));
-};
-var _user$project$Main$Model = F2(
-	function (a, b) {
-		return {query: a, result: b};
-	});
-var _user$project$Main$init = {
-	ctor: '_Tuple2',
-	_0: A2(_user$project$Main$Model, '', ''),
-	_1: _elm_lang$core$Platform_Cmd$none
 };
 var _user$project$Main$Query = function (a) {
 	return {ctor: 'Query', _0: a};
@@ -9112,11 +9119,14 @@ var _user$project$Main$update = F2(
 					_1: _user$project$Main$fetchCmd(model)
 				};
 			case 'FetchSuccess':
+				var _p1 = _p0._0;
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{result: _p0._0}),
+						{
+							result: {p: _p1.p, s: _p1.s}
+						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			default:
@@ -9125,7 +9135,7 @@ var _user$project$Main$update = F2(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							result: _elm_lang$core$Basics$toString(_p0._0)
+							query: _elm_lang$core$Basics$toString(_p0._0)
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
@@ -9158,7 +9168,8 @@ var _user$project$Main$view = function (model) {
 						_elm_lang$core$Native_List.fromArray(
 							[]))
 					])),
-				_elm_lang$html$Html$text(model.result)
+				_elm_lang$html$Html$text(model.result.p),
+				_elm_lang$html$Html$text(model.result.s)
 			]));
 };
 var _user$project$Main$main = {

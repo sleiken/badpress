@@ -6,7 +6,7 @@ import Html.Events exposing (onClick)
 import Html.App
 import Http
 import Task exposing (Task)
-import Json.Decode as Decode
+import Json.Decode exposing ((:=), Decoder, string, object2)
 import Keyboard
 
 -- MODEL
@@ -14,13 +14,13 @@ import Keyboard
 
 type alias Model =
     { query: String
-    , result: String
+    , result: ResultRecord
     }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model "" "", Cmd.none )
+    ( { query = "", result = {p = "", s = ""} }, Cmd.none )
 
 
 -- MESSAGES
@@ -28,7 +28,7 @@ init =
 
 type Msg
     = Fetch
-    | FetchSuccess String
+    | FetchSuccess ResultRecord
     | FetchError Http.Error
     | Query String
 
@@ -41,16 +41,25 @@ view : Model -> Html Msg
 view model =
     div []
         [ form [ Html.Events.onSubmit Fetch ] [ input [ id "test", type' "text", Html.Events.onInput Query ] [] ]
-        , text model.result
+        , text model.result.p
+        , text model.result.s
         ]
 
 
-decode : Decode.Decoder String
+type alias ResultRecord =
+  { p : String
+  , s : String
+  }
+
+
+decode : Decoder ResultRecord
 decode =
-    Decode.at [ "positivity", "subjectivity" ] Decode.string
+  object2 ResultRecord
+    ("positivity" := string)
+    ("subjectivity" := string)
 
 
-fetchTask : Model -> Task Http.Error String
+fetchTask : Model -> Task Http.Error ResultRecord
 fetchTask model =
     Http.post
       decode
@@ -76,10 +85,10 @@ update msg model =
             ( model, fetchCmd model )
 
         FetchSuccess result ->
-            ( { model | result = result }, Cmd.none )
+            ( { model | result = { p = result.p, s = result.s } }, Cmd.none )
 
         FetchError error ->
-            ( { model | result =toString error }, Cmd.none )
+            ( { model | query = toString error }, Cmd.none )
 
 
 -- MAIN
