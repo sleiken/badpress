@@ -1,0 +1,10 @@
+<form action="/analyze" method="POST">
+  <input type="text" name="term" placeholder="Enter term..."/>
+  <input type="submit" value="Analyze">
+</form>
+<div>
+  {% if tweets %}
+    <p>Average Positivity: {{ tweets[0] }}</p>
+    <p>Average Subjectivity: {{ tweets[1] }}</p>
+  {% endif %}
+</div>
