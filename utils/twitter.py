@@ -1,10 +1,11 @@
+import os
 import tweepy
 from textblob import TextBlob
 
-consumer_key= 'F279JL3R75Vg1XPYhXmAXQeAI'
-consumer_secret= '6kW4DSGMiHgPlXBwMbZkEKY6bMWd2MwKxexNxlXW2jqN9qu3tu'
-access_token='41011520-WpjhVtQT4cEckS94UrLeRzupcjDqpEYlIvGuzSlnx'
-access_token_secret='YDwKEMwKGM7E9QsCtd4lghL3iTSbtL6UhnybjvV19GXxG'
+consumer_key = os.environ['TWITTER_CONSUMER_KEY']
+consumer_secret = os.environ['TWITTER_CONSUMER_SECRET']
+access_token = os.environ['TWITTER_ACCESS_TOKEN']
+access_token_secret = os.environ['TWITTER_ACCESS_TOKEN_SECRET']
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
